@@ -13,7 +13,7 @@ namespace SuperClass
         /// <typeparam name="T">T</typeparam>
         /// <param name="xmlNode">The XmlNode</param>
         /// <returns></returns>
-        public static T ConvertFromXmlNode<T>(XmlNode xmlNode) where T : class
+        protected T ConvertFromXmlNode<T>(XmlNode xmlNode) where T : class
         {
             if (xmlNode == null) throw new ArgumentNullException(nameof(xmlNode));
 
