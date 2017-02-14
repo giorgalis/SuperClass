@@ -11,15 +11,17 @@ namespace SuperClass
         /// Converts an XmlNode to an object.
         /// </summary>
         /// <typeparam name="T">T</typeparam>
-        /// <param name="node">The XmlNode</param>
+        /// <param name="xmlNode">The XmlNode</param>
         /// <returns></returns>
-        public static T ConvertFromXmlNode<T>(XmlNode node) where T : class
+        public static T ConvertFromXmlNode<T>(XmlNode xmlNode) where T : class
         {
+            if (xmlNode == null) throw new ArgumentNullException(nameof(xmlNode));
+
             using (MemoryStream stm = new MemoryStream())
             {
                 using (StreamWriter stw = new StreamWriter(stm))
                 {
-                    stw.Write(node.OuterXml);
+                    stw.Write(xmlNode.OuterXml);
                     stw.Flush();
                     stm.Position = 0;
 
@@ -37,21 +39,23 @@ namespace SuperClass
         /// <typeparam name="T">T</typeparam>
         /// <param name="xmlString">The xml string</param>
         /// <returns></returns>
-        protected T ConvertFromXmlString<T>(string xmlString)
+        protected T ConvertFromXmlString<T>(string xmlString) where T : class
         {
-            T returnedXmlClass = default(T);
+            if (string.IsNullOrEmpty(xmlString)) throw new ArgumentNullException(nameof(xmlString));
+
+            T retClass = default(T);
             using (TextReader reader = new StringReader(xmlString))
             {
                 try
                 {
-                    returnedXmlClass = (T)new XmlSerializer(typeof(T)).Deserialize(reader);
+                    retClass = (T)new XmlSerializer(typeof(T)).Deserialize(reader);
                 }
                 catch (InvalidOperationException)
                 {
                     throw new InvalidOperationException(nameof(xmlString));
                 }
             }
-            return returnedXmlClass;
+            return retClass;
         }
     }
 }
