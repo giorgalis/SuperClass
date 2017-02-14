@@ -17,16 +17,16 @@ namespace SuperClass
         {
             if (xmlNode == null) throw new ArgumentNullException(nameof(xmlNode));
 
-            using (MemoryStream stm = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (StreamWriter stw = new StreamWriter(stm))
+                using (StreamWriter sw = new StreamWriter(ms))
                 {
-                    stw.Write(xmlNode.OuterXml);
-                    stw.Flush();
-                    stm.Position = 0;
+                    sw.Write(xmlNode.OuterXml);
+                    sw.Flush();
+                    ms.Position = 0;
 
                     XmlSerializer ser = new XmlSerializer(typeof(T));
-                    T result = (ser.Deserialize(stm) as T);
+                    T result = (ser.Deserialize(ms) as T);
 
                     return result;
                 }
